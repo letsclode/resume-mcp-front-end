@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 export default function Home() {
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [question, setQuestion] = useState('');
@@ -14,17 +16,17 @@ export default function Home() {
     if (!resumeFile) return;
     const formData = new FormData();
     formData.append('file', resumeFile); // ✅ Correct key name
-    await axios.post('http://localhost:3000/upload-resume', formData);
+    await axios.post(`${API_BASE}/upload-resume`, formData);
     alert('Resume uploaded!');
   };
 
   const askQuestion = async () => {
-    const res = await axios.post('http://localhost:3000/ask', { question });
+    const res = await axios.post(`${API_BASE}/ask`, { question });
     setAnswer(res.data.answer);
   };
 
   const sendEmail = async () => {
-    const res = await axios.post('http://localhost:3000/send-email', email);
+    const res = await axios.post(`${API_BASE}/send-email`, email);
     setEmailStatus('Email sent: ' + res.data.messageId);
   };
 
